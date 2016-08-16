@@ -1,6 +1,5 @@
-Original source: http://netresearch.ics.uci.edu/kfujii/Jpcap/doc/ Forked by Dave Rusek 1/12/2012
-
-Jpcap ver.0.7
+Original source: http://netresearch.ics.uci.edu/kfujii/Jpcap/doc/ Forked by Jovi gu 16/08/2016
+support x64 on win7
 
 Copyright (c) 1999-2007 Keita Fujii <kfujii@uci.edu>
 
