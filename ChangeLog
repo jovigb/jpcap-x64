@@ -1,0 +1,82 @@
+Changes
+
+ver. 0.7 (07/09/07)
+    Mac OS X supported (thanx!>Flavius)
+	RPM and Debian binary package (experimental)
+    JpcapSender can now send IPv6 packet. (But not IPv6Option yet.)
+    JpcapSender.openRawSocket() deprecated. Using JpcapSender.openDevice() is recommended.
+    JpcapCaptor.dispatchPacket() deprecated (because it's same as processPacket())
+    Bug fix: IPv6 routnig option header
+
+ver. 0.6 (05/15/07)
+    New methods: JpcapCaptor.setPacketReadTimeout() and JpcapCaptor.getPcaketReadTimeout() (thanx! > Jim)
+    Make Packet.class (and its subclasses) serializable.
+    JpcapCaptor.setFilter() throws IOException when invalid filter is passed. (thanx! > Jim)
+    Windows: recompiled with WinPcap v.4.0
+    Bug fix: memory leak (thanx! > Shepherd)
+    Bug fix: JVM crushes when capturing non-Ethener packets (thanx! > Kenta)
+    Bug fix: JVM crushes when capturing IPv6 packet with routing option (thanx!> WangWei)
+    Bug fix: Modify ICMP.ID and ICMP.sequence to short.
+    Bug fix: analyze a sequence of IPv6 option headers
+    Bug fix: memory leak on datalink packets
+    Bug fix: ICMP checksum
+    Bug fix: IPv6 extension
+    Able to capture/send TCP options
+    Bug fix: incorrect checksum when Packet.data contains an odd number of bytes
+
+ver. 0.5.1 (04/21/06)
+    Bug fix: Installer puts Jpcap.jar in a wrong directory for JDK
+    Bug fix: incorrect MAC address assigned to each interface
+    Bug fix: cannot open a device if its netmask is not set 
+    Bug fix: incorrect IPv4 fragment flags setting (thanx!> Sean)
+    Support sending ICMP timestamp and netmask packets
+    Bug fix: not parse next mtu when receiving an ICMP unreachable packet
+    Bug fix: wrong IPv6 header length calculation (thanx!> Mihail)
+
+ver. 0.5 (01/01/06)
+    Change the license from GPL to LGPL.
+    Move all *Packet class into the jpcap.packet package.
+    Renamed Jpcap to JpcapCaptor and JpcapHandler to PacketReceiver.
+    Added NetworkInterface and NetworkInterfaceAddress classes.
+    Remove JpcapCaptor.lookupDevice(). Use JpcapCaptor.getDeviceList() instead.
+    Removed JpcapCaptor.getDeviceDescription(). Use JpcapCaptor.getDeviceList() instead.
+    Changed JpcapCaptor.getDeviceList();
+    Modify JpcapCaptor.openDevice() to take an Interface instance.
+    Remove IPAddress. IPAddress was replaced by java.net.InetAddress.
+    Bug fix: Jpcap crushes when receiving a big packet.
+    Bug fix: Jpcap crushes when receiving a packet with a header larger than snaplen
+    Added JpcapCaptor.breakLoop().
+    Added JpcapCaptor.dispatchPacket().
+    Added JpcapCaptor.setNonBlockingMode() and JpcapCaptor.isNonBlockingMode().
+    Bug fix: incorrect checksum calculation when sending an IP packet.
+    Bug fix: other bugs in JpcapSender.
+
+04/09/03 Fixed the bugs of Jpcap.openFile() and JpcapWriter
+
+04/01/03 Add JpcapSender for sending packets.
+         Add/Revise some APIs of Jpcap.
+         Add support of Raw Socket for sending packets on Windows 2000/XP.
+         Support multiple Jpcap and JpcapSender instances in a single application
+         Many bug fixes
+
+09/14/00 Add JpcapWriter for saving packets to a file.
+         ARP/ Reverse ARP packet supported (jpcap.ARPPacket added).
+         Fix bug to call Jpcap#close() when garbage-collected.
+         Fix bug that Jpcap.c couldn't compile on Linux
+         Divide Jpcap.c into several files.
+
+08/22/00 Fixed bug to cause crush when capturing ICMP with error IP packet.
+
+08/03/00 Fixed bug which disabled to compile under Solaris (and probably
+         Linux).
+
+07/29/00 Jpcap 0.02 is relased.
+         Fixed various bugs. Now it counts the size of a packet correctly.
+         Also the data field following the header is exactly copied.
+         Microsoft Windows (both 9x and NT/2000) is supported.
+
+07/04/00 Jpcap.loopPacket() method were added.
+         Fixed to get IP fragment offset in host order.
+
+06/25/00 Jpcap 0.01 is released.
+

@@ -1,0 +1,8 @@
+Package: jpcap
+Maintainer: Keita Fujii <kfujii@uci.edu>
+Version: 0.7
+Section: libs
+Architecture: i386
+Depends: sun-java6-jdk, libpcap0.8
+Description: A Java library for capturing and sending network packets.
+ A Java library for capturing and sending network packets.

@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<project name="Jpcap" default="jar">
+	<property name="version" value="0.7"/>
+	<property name="release" value="1"/>
+	<property name="NSIS" value="C:\Program Files (x86)\NSIS\makensis.exe"/>
+	
+	<condition property="IsWindows">
+		<os family="windows"/>
+	</condition>
+	<condition property="IsUnix">
+		<and>
+			<os family="unix"/>
+			<not>
+				<os family="mac"/>
+			</not>
+		</and>
+	</condition>
+	<condition property="IsNSISAvailable">
+		<and>
+			<os family="windows"/>
+			<available file="${NSIS}" property="IsNSISExeAvailable"/>
+		</and>
+	</condition>
+	
+	<target name="compile">
+        <javac
+        	srcdir="src/java"
+      		destdir="bin"
+       />
+    </target>
+	
+    <target name="jar" depends="compile">
+        <jar
+             jarfile="lib/jpcap.jar"
+             basedir="bin"
+             excludes="*.class"
+        />
+    </target>
+
+	<target name="javadoc">
+		<javadoc
+			packagenames="*"
+			sourcepath="src/java"
+			destdir="doc/javadoc"
+			locale="en_US"
+			Public="true"
+		/>
+	</target>
+	
+	<target name="javah" depends="compile">
+		<javah destdir="src/c" classpath="bin" force="true">
+			<class name="jpcap.JpcapCaptor"/>
+			<class name="jpcap.JpcapSender"/>
+			<class name="jpcap.JpcapWriter"/>
+		</javah>
+	</target>
+	
+	<target name="make" depends="javah" if="IsUnix">
+		<exec dir="src/c" executable="make">
+		</exec>
+		<copy file="src/c/libjpcap.so" todir="lib" overwrite="true"/>
+		<delete file="src/c/libjpcap.so"/>
+	</target>
+	
+	<target name="win_installer" depends="jar" if="IsNSISAvailable">
+		<exec dir="src/installer/win32" executable="${NSIS}">
+			<arg line="setup.nsi"/>
+		</exec>
+		<copy file="src/installer/win32/JpcapSetup.exe" tofile="JpcapSetup-${version}.exe" overwrite="true"/>
+		<delete file="src/installer/win32/JpcapSetup.exe"/>
+	</target>
+	
+	<target name="source.zip" depends="win_installer">
+    	<copy todir="lib">
+ 			<fileset file="src/c/win32/Release/Jpcap.dll"/>
+    	</copy>
+		<zip
+			destfile="jpcap-${version}.zip"
+			basedir="."
+			excludes="**/.* **/*.zip */*.tar **/*.tar.gz **/*.rpm **/*.deb **/*.exe bin/** src/c/win32/Debug/** src/c/win32/Release/** src/c/win32/**.ncb src/c/win32/*.vcproj.* "
+		/>
+	</target>
+	
+	<target name="source.gzip" depends="jar">
+		<tar destfile="jpcap-${version}.tar">
+			<tarfileset dir="."
+				prefix="jpcap-${version}"
+				excludes="**/.* **/*.zip **/*.tar **/*.tar.gz **/*.rpm **/*.deb **/*.exe bin/** src/c/win32/Debug/** src/c/win32/Release/** src/c/win32/**.ncb src/c/win32/*.vcproj.* "
+			/>
+		</tar>
+		<gzip zipfile="jpcap-${version}.tar.gz" src="jpcap-${version}.tar"/>
+		<delete file="jpcap-${version}.tar"/>
+	</target>
+	
+	<target name="rpm" depends="source.gzip">
+		<copy file="jpcap-${version}.tar.gz" todir="/usr/src/redhat/SOURCES" overwrite="true"/>
+		<exec executable="rpmbuild">
+			<arg line="-ba src/installer/rpm/jpcap.spec"/>
+		</exec>
+		<copy file="/usr/src/redhat/RPMS/i386/jpcap-${version}-${release}.i386.rpm" todir="."/>
+	</target>
+	
+	<target name="deb" depends="jar,make">
+		<mkdir dir="jpcap-${version}"/>
+		<mkdir dir="jpcap-${version}/usr/lib"/>
+		<mkdir dir="jpcap-${version}/usr/java/packages/lib/ext"/>
+		<copy file="lib/libjpcap.so" todir="jpcap-${version}/usr/lib"/>
+		<copy file="lib/jpcap.jar" todir="jpcap-${version}/usr/java/packages/lib/ext"/>
+		<mkdir dir="jpcap-${version}/DEBIAN"/>
+		<copy file="src/installer/deb/control" todir="jpcap-${version}/DEBIAN"/>
+		<exec executable="dpkg-deb">
+			<arg line="--build jpcap-${version}"/>
+		</exec>
+		<delete dir="jpcap-${version}"/>
+	</target>
+</project>

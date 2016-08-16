@@ -1,0 +1,57 @@
+Original source: http://netresearch.ics.uci.edu/kfujii/Jpcap/doc/ Forked by Dave Rusek 1/12/2012
+
+Jpcap ver.0.7
+
+Copyright (c) 1999-2007 Keita Fujii <kfujii@uci.edu>
+
+
+* Introduction
+
+Jpcap is a Java library for capturing and sending
+network packets.
+
+Jpcap is based on libpcap/winpcap.
+So Jpcap is supposed to work on any OS which
+supports libpcap/winpcap. 
+Currently, Jpcap has been tested on Microsoft
+Windows, Linux, FreeBSD, and Mac OS X.
+
+Jpcap supports the following types of packets: 
+Ethernet, IPv4, IPv6, ARP/RARP, TCP, UDP, and ICMPv4.  
+Other types of packets are captured as raw packets 
+(i.e., instances of the Packet class) which contains 
+the whole data of the packets.  This allows Java applications 
+to analyze unsupported packet types.
+
+
+* Requirements:
+
+  - Java Runtime Environment 6 or Java Development Kit 6 (http://java.sun.com)
+  - libpcap ver.0.9.4 or higher (http://www.tcpdump.org)
+    OR
+  - WinPcap ver.3.1 or higher (http://winpcap.polito.it/)
+
+
+* Compile & Installation
+
+see 'doc/install.html' for how to compile and install Jpcap
+on your system.
+
+
+* Usage
+
+See the documentations under the directory 'doc'.
+You can also check some example source codes under 'sample'
+
+
+* Note
+
+You can redistribute it and/or modify it under the terms of
+the LGPL (GNU LESSER GENERAL PUBLIC LICENSE).  See COPYING file about LGPL.
+
+Jpcap provides poweful control of the network which may cause potential
+danger such as security threats or network policy violation.
+Plase use Jpcap at your own responsibility.
+I (Keita Fujii) am not responsible for any damage or legal/financial
+issue caused by using Jpcap under any circumstance.
+Also, DO NOT use Jpcap to develop any malicious software.
